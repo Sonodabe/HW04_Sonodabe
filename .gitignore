@@ -20,3 +20,13 @@ xcode/build/Debug/HW04_Sonodabe.app/Contents/PkgInfo
 *.hmap
 
 *.dat
+
+xcode/HW04_Sonodabe.xcodeproj/project.xcworkspace/xcuserdata/brandonsonoda.xcuserdatad/UserInterfaceState.xcuserstate
+
+*.hmap
+
+xcode/build/HW04_Sonodabe.build/Debug/HW04_Sonodabe.build/HW04_Sonodabe-project-headers.hmap
+
+xcode/build/HW04_Sonodabe.build/Debug/HW04_Sonodabe.build/HW04_Sonodabe.hmap
+
+.DS_Store
