@@ -9,8 +9,8 @@ using namespace ci::app;
 using namespace std;
 
 class HW04_SonodabeApp : public AppBasic {
-  public:
-    int count = 0;
+public:
+    int count;
 	void setup();
 	void mouseDown( MouseEvent event );	
 	void update();
@@ -20,15 +20,21 @@ class HW04_SonodabeApp : public AppBasic {
 
 void HW04_SonodabeApp::setup()
 {
+    count = 0;
     Entry* first = createArray();
     int n = count;
+    Starbucks_Sonodabe* test = new Starbucks_Sonodabe;
+    test->build(first, n);
+    test->list->getMedian(true);
     
+    int x;
 }
 
 Entry* HW04_SonodabeApp::createArray(){
     string name;
     double posX, posY;
-    ifstream input("../../../resources/Starbucks_2006.csv");
+//    ifstream input("../../../resources/Starbucks_2006.csv");
+    ifstream input("../../../resources/Test.csv");
     while(input.good()){
         getline(input, name, ',');
         input >> posX;

@@ -16,6 +16,7 @@
 		00BAE65A0E7ED9C10018A608 /* HW04_SonodabeApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00BAE6590E7ED9C10018A608 /* HW04_SonodabeApp.cpp */; };
 		00CCAF15116A9FEE008396D5 /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = 00CCAF14116A9FEE008396D5 /* CinderApp.icns */; };
 		4CCB2769163B04EC00CDFFD9 /* Starbucks_Sonodabe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CCB2768163B04EC00CDFFD9 /* Starbucks_Sonodabe.cpp */; };
+		4CCB2772163B904800CDFFD9 /* List.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CCB2771163B904800CDFFD9 /* List.cpp */; };
 		4CFA3484163AF145003D2A0D /* Census_2000.csv in Resources */ = {isa = PBXBuildFile; fileRef = 4CFA3481163AF145003D2A0D /* Census_2000.csv */; };
 		4CFA3485163AF145003D2A0D /* Census_2010.csv in Resources */ = {isa = PBXBuildFile; fileRef = 4CFA3482163AF145003D2A0D /* Census_2010.csv */; };
 		4CFA3486163AF145003D2A0D /* Starbucks_2006.csv in Resources */ = {isa = PBXBuildFile; fileRef = 4CFA3483163AF145003D2A0D /* Starbucks_2006.csv */; };
@@ -41,6 +42,9 @@
 		32CA4F630368D1EE00C91783 /* HW04_Sonodabe_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HW04_Sonodabe_Prefix.pch; sourceTree = "<group>"; };
 		4CCB2767163B04CB00CDFFD9 /* Starbucks_Sonodabe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Starbucks_Sonodabe.h; path = ../include/Starbucks_Sonodabe.h; sourceTree = "<group>"; };
 		4CCB2768163B04EC00CDFFD9 /* Starbucks_Sonodabe.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Starbucks_Sonodabe.cpp; path = ../src/Starbucks_Sonodabe.cpp; sourceTree = "<group>"; };
+		4CCB276E163B8E4500CDFFD9 /* Node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Node.h; path = ../include/Node.h; sourceTree = "<group>"; };
+		4CCB2770163B8F7D00CDFFD9 /* List.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = List.h; path = ../include/List.h; sourceTree = "<group>"; };
+		4CCB2771163B904800CDFFD9 /* List.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = List.cpp; path = ../src/List.cpp; sourceTree = "<group>"; };
 		4CFA347E163AF130003D2A0D /* Resources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Resources.h; path = ../include/Resources.h; sourceTree = "<group>"; };
 		4CFA347F163AF130003D2A0D /* Starbucks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Starbucks.h; path = ../include/Starbucks.h; sourceTree = "<group>"; };
 		4CFA3481163AF145003D2A0D /* Census_2000.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Census_2000.csv; path = ../resources/Census_2000.csv; sourceTree = "<group>"; };
@@ -77,6 +81,7 @@
 		080E96DDFE201D6D7F000001 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				4CCB2771163B904800CDFFD9 /* List.cpp */,
 				4CCB2768163B04EC00CDFFD9 /* Starbucks_Sonodabe.cpp */,
 				00BAE6590E7ED9C10018A608 /* HW04_SonodabeApp.cpp */,
 			);
@@ -137,6 +142,8 @@
 				4CFA347E163AF130003D2A0D /* Resources.h */,
 				4CFA347F163AF130003D2A0D /* Starbucks.h */,
 				32CA4F630368D1EE00C91783 /* HW04_Sonodabe_Prefix.pch */,
+				4CCB276E163B8E4500CDFFD9 /* Node.h */,
+				4CCB2770163B8F7D00CDFFD9 /* List.h */,
 			);
 			name = Headers;
 			sourceTree = "<group>";
@@ -225,6 +232,7 @@
 			files = (
 				00BAE65A0E7ED9C10018A608 /* HW04_SonodabeApp.cpp in Sources */,
 				4CCB2769163B04EC00CDFFD9 /* Starbucks_Sonodabe.cpp in Sources */,
+				4CCB2772163B904800CDFFD9 /* List.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
