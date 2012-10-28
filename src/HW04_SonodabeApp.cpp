@@ -1,3 +1,4 @@
+
 #include "cinder/app/AppBasic.h"
 #include "cinder/gl/gl.h"
 #include "Starbucks_Sonodabe.h"
@@ -25,16 +26,14 @@ void HW04_SonodabeApp::setup()
     int n = count;
     Starbucks_Sonodabe* test = new Starbucks_Sonodabe;
     test->build(first, n);
-    test->list->getMedian(true);
     
-    int x;
 }
 
 Entry* HW04_SonodabeApp::createArray(){
     string name;
     double posX, posY;
-//    ifstream input("../../../resources/Starbucks_2006.csv");
-    ifstream input("../../../resources/Test.csv");
+    ifstream input("../../../resources/Starbucks_2006.csv");
+//    ifstream input("../../../resources/Test.csv");
     while(input.good()){
         getline(input, name, ',');
         input >> posX;

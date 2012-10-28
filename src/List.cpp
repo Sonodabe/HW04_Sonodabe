@@ -1,118 +1,173 @@
 #include "List.h"
 
-List::List(){
-    sentinelX = new Node;
-    sentinelY = new Node;
-    
-    sentinelX->nextX = sentinelX;
-    sentinelX->prevX = sentinelX;
-    sentinelY->nextY = sentinelY;
-    sentinelY->prevY = sentinelY;
-    
-    sentinelX->nextY = NULL;
-    sentinelX->prevY = NULL;
-    sentinelY->nextX = NULL;
-    sentinelY->prevX = NULL;
-    
+List::List(Entry* entries, int len){
+    sentinel = new Node;
+    isX = true;
+    sentinel->next = sentinel;
+    sentinel->prev = sentinel;
     length = 0;
+    
+    insertAndCheckAll(entries, len);
 }
 
-void List::insert(Entry* insertee){
-    Node* temp = new Node;
-    temp->data = insertee;
+List::List(Entry* entries, int len, bool x){
+    sentinel = new Node;
+    isX = x;
+    sentinel->next = sentinel;
+    sentinel->prev = sentinel;
+    length = 0;
     
-    if(insertX(temp)){
-        insertY(temp);
-        length++;   
+    insertAll(entries, len);
+}
+
+void List::insertAll(Entry* entries, int len){
+    for(int i = 0; i<len; i++)
+        insert(entries+i);
+}
+
+void List::insertAndCheckAll(Entry* entries, int len){
+    for(int i = 0; i<len; i++)
+        insertAndCheck(entries+i);
+}
+
+List* List::split(bool first){
+    List* newList;
+    int len;
+    Entry* newEntries;
+    if(first){
+        len = length/2;
+        newEntries = new Entry[len];
+        int i = 0;
+        Node* cur = sentinel->next;
+        
+        while(cur!= getMedian()){
+            newEntries[i].identifier = cur->data->identifier;
+            newEntries[i].x = cur->data->x;
+            newEntries[i].y = cur->data->y;
+            cur = cur->next;
+            i++;
+        }
+    }else{
+        if(len%2 == 0)
+            len = length-length/2-1;
+        else
+            len = length-length/2;
+        newEntries = new Entry[len];
+        
+        Node* cur = getMedian()->next;
+        int i = 0;
+        while(cur!= sentinel){
+            newEntries[i].identifier = cur->data->identifier;
+            newEntries[i].x = cur->data->x;
+            newEntries[i].y = cur->data->y;
+            cur = cur->next;
+            i++;
+        }
+        
     }
     
+    newList = new List(newEntries, len, !isX);
+    return newList;
 }
 
-Node* List::getMedian(bool x){
+
+
+Node* List::getMedian(){
     int medianIndex = length/2+1;
     Node* cur;
+    cur = sentinel;
+    for(int i = 0; i<medianIndex; i++)
+        cur = cur->next;
     
-    if(x){
-        cur = sentinelX;
-        for(int i = 0; i<medianIndex; i++)
-            cur = cur->nextX;
-    }else{
-        cur = sentinelY;
-        for(int i = 0; i<medianIndex; i++)
-            cur = cur->nextY;
-    }
+    
     
     return cur;
 }
 
 Entry* List::remove(Node* toBeRemoved){
-    if(toBeRemoved == NULL || toBeRemoved == sentinelX ||
-       toBeRemoved == sentinelY)
+    if(toBeRemoved == NULL || toBeRemoved == sentinel)
         return NULL;
     
-    toBeRemoved->prevX->nextX = toBeRemoved->nextX;
-    toBeRemoved->nextX->prevX = toBeRemoved->prevX;
-    toBeRemoved->prevY->nextY = toBeRemoved->nextY;
-    toBeRemoved->nextY->prevY = toBeRemoved->prevY;
+    toBeRemoved->prev->next = toBeRemoved->next;
+    toBeRemoved->next->prev = toBeRemoved->prev;
     
     Entry* data = toBeRemoved->data;
     delete toBeRemoved;
-    
-    
     length--;
-    
     return data;
 }
 
 
-bool List::insertX(Node* insertee){
+void List::insertAndCheck(Entry* toInsert){
+    Node* insertee = new Node;
+    insertee->data = toInsert;
     double posX = insertee->data->x;
     double posY = insertee->data->y;
-    Node* cur = sentinelX->nextX;
+    Node* cur = sentinel->next;
     
     double distX, distY;
     
-    while(cur != sentinelX && cur->data->x < posX){
-        distX = distance(cur->data->x, posX);
-        distY = distance(cur->data->y, posY);
-        if(distX <= 0.00001 && distY <= 0.00001)
-            return false;
+    if(isX){
+        while(cur != sentinel && cur->data->x < posX){
+            distX = distance(cur->data->x, posX);
+            distY = distance(cur->data->y, posY);
+            if(distX <= 0.00001 && distY <= 0.00001)
+                return;
+            cur = cur->next;
+        }
+    }else{
+        while(cur != sentinel && cur->data->y < posY){
+            distX = distance(cur->data->x, posX);
+            distY = distance(cur->data->y, posY);
+            if(distX <= 0.00001 && distY <= 0.00001)
+                return;
+            cur = cur->next;
+        }
         
-        cur = cur->nextX;
     }
     
-    if(cur == sentinelX){
-        sentinelX->prevX->nextX = insertee;
-        insertee->prevX = sentinelX->prevX;
-        insertee->nextX = sentinelX;
-        sentinelX->prevX = insertee;
-        return true;
+    if(cur == sentinel){
+        sentinel->prev->next = insertee;
+        insertee->prev = sentinel->prev;
+        insertee->next = sentinel;
+        sentinel->prev = insertee;
+        length++;
+        return;
     }
     
     distX = distance(cur->data->x, posX);
     distY = distance(cur->data->y, posY);
     if(distX <= 0.00001 && distY <= 0.00001)
-        return false;
+        return;
     
-    cur->prevX->nextX = insertee;
-    insertee->prevX = cur->prevX;
-    insertee->nextX = cur;
-    cur->prevX = insertee;
-    return true;
+    cur->prev->next = insertee;
+    insertee->prev = cur->prev;
+    insertee->next = cur;
+    cur->prev = insertee;
+    length++;
 }
 
-void List::insertY(Node* insertee){
-    double posY = insertee->data->y;
-    Node* cur = sentinelY->nextY;
-        
-    while(cur != sentinelY && cur->data->y < posY)
-        cur = cur->nextY;
-
+void List::insert(Entry* toInsert){
+    Node* insertee = new Node;
+    insertee->data = toInsert;
+    double posX = toInsert->x;
+    double posY = toInsert->y;
+    Node* cur = sentinel->next;
     
-    cur->prevY->nextY = insertee;
-    insertee->prevY = cur->prevY;
-    insertee->nextY = cur;
-    cur->prevY = insertee;    
+    if(isX){
+        while(cur != sentinel && cur->data->x < posX)
+            cur = cur->next;
+    }else{
+        while(cur != sentinel && cur->data->y < posY)
+            cur = cur->next;  
+    }
+    
+    
+    cur->prev->next = insertee;
+    insertee->prev = cur->prev;
+    insertee->next = cur;
+    cur->prev = insertee; 
+    length++;
 }
 
 double List::distance(double a, double b){

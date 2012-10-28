@@ -45,6 +45,8 @@
 		4CCB276E163B8E4500CDFFD9 /* Node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Node.h; path = ../include/Node.h; sourceTree = "<group>"; };
 		4CCB2770163B8F7D00CDFFD9 /* List.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = List.h; path = ../include/List.h; sourceTree = "<group>"; };
 		4CCB2771163B904800CDFFD9 /* List.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = List.cpp; path = ../src/List.cpp; sourceTree = "<group>"; };
+		4CCB2773163DDA4600CDFFD9 /* TreeNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TreeNode.h; path = ../include/TreeNode.h; sourceTree = "<group>"; };
+		4CCB2774163DDA8D00CDFFD9 /* KDTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KDTree.h; path = ../include/KDTree.h; sourceTree = "<group>"; };
 		4CFA347E163AF130003D2A0D /* Resources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Resources.h; path = ../include/Resources.h; sourceTree = "<group>"; };
 		4CFA347F163AF130003D2A0D /* Starbucks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Starbucks.h; path = ../include/Starbucks.h; sourceTree = "<group>"; };
 		4CFA3481163AF145003D2A0D /* Census_2000.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Census_2000.csv; path = ../resources/Census_2000.csv; sourceTree = "<group>"; };
@@ -143,6 +145,8 @@
 				4CFA347F163AF130003D2A0D /* Starbucks.h */,
 				32CA4F630368D1EE00C91783 /* HW04_Sonodabe_Prefix.pch */,
 				4CCB276E163B8E4500CDFFD9 /* Node.h */,
+				4CCB2773163DDA4600CDFFD9 /* TreeNode.h */,
+				4CCB2774163DDA8D00CDFFD9 /* KDTree.h */,
 				4CCB2770163B8F7D00CDFFD9 /* List.h */,
 			);
 			name = Headers;

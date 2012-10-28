@@ -1,9 +1,9 @@
 #pragma once
 #include "Starbucks.h"
 
-class Node{
+class TreeNode {
 public:
+    TreeNode* left;
+    TreeNode* right;
     Entry* data;
-    Node* prev;
-    Node* next;
 };
