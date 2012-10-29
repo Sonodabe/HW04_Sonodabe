@@ -6,4 +6,5 @@ public:
     TreeNode* left;
     TreeNode* right;
     Entry* data;
+    bool isX;
 };

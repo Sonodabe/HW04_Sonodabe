@@ -26,14 +26,20 @@ void HW04_SonodabeApp::setup()
     int n = count;
     Starbucks_Sonodabe* test = new Starbucks_Sonodabe;
     test->build(first, n);
+    Entry* closest = test->getNearest(4, 8);
+    
+    List* list = new List(first, n);
+    Entry* closer = test->getManNearest(4, 8, list);
+    
+    int x=1;
     
 }
 
 Entry* HW04_SonodabeApp::createArray(){
     string name;
     double posX, posY;
-    ifstream input("../../../resources/Starbucks_2006.csv");
-//    ifstream input("../../../resources/Test.csv");
+    ifstream input("../../../resources/x.csv");
+//    ifstream input("../../../resources/Starbucks_2006.csv");
     while(input.good()){
         getline(input, name, ',');
         input >> posX;

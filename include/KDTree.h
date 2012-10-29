@@ -3,9 +3,5 @@
 
 class KDTree {
 public:
-    void getNearest(double x, double y);
-    TreeNode*root;
-    
-    
-    
+    TreeNode*root;        
 };
