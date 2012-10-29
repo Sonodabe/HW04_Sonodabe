@@ -3,6 +3,7 @@
 
 class Node{
 public:
+    //Destructer
     ~Node(){
         delete data;
         delete prev;
@@ -11,7 +12,10 @@ public:
         prev = NULL;
         next = NULL;
     }
+    //Date of the node
     Entry* data;
+    //Previous pointer
     Node* prev;
+    //next pointer
     Node* next;
 };

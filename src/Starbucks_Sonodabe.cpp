@@ -3,8 +3,11 @@
 
 void Starbucks_Sonodabe::build(Entry* c, int n){
     Entry* entries = new Entry[n];
-    for(int i = 0; i<n; i++)
-        entries[i] = c[i];
+    for(int i = 0; i<n; i++){
+        (entries+i)->identifier = (c+i)->identifier;
+        (entries+i)->x = (c+i)->x;
+        (entries+i)->y = (c+i)->y;
+    }
     
     list = new List(entries, n);
     tree = new KDTree;
