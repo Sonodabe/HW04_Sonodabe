@@ -32,3 +32,5 @@ xcode/build/HW04_Sonodabe.build/Debug/HW04_Sonodabe.build/HW04_Sonodabe.hmap
 .DS_Store
 
 xcode/.DS_Store
+
+*.xcbkptlist

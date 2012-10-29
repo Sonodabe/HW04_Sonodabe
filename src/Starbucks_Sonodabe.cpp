@@ -39,11 +39,11 @@ TreeNode* Starbucks_Sonodabe::getNearest(double x, double y, TreeNode* root){
     bool left;
     if(root->isX){
         if(x < root->data->x){
-            candidate = (root->left == NULL)? getNearest(x, y, root->left) : root;
+            candidate = (root->left != NULL)? getNearest(x, y, root->left) : root;
             left = true;   
         }
         else{
-            candidate = (root->right == NULL)? getNearest(x, y, root->right) : root;
+            candidate = (root->right != NULL)? getNearest(x, y, root->right) : root;
             left = false;
         }
         
@@ -53,10 +53,10 @@ TreeNode* Starbucks_Sonodabe::getNearest(double x, double y, TreeNode* root){
             TreeNode* candidate2;
             
             if(left){
-                candidate2 = (root->right == NULL)? getNearest(x, y, root->right) : root;
+                candidate2 = (root->right != NULL)? getNearest(x, y, root->right) : root;
             }
             else{
-                candidate2 = (root->left == NULL)? getNearest(x, y, root->left) : root;
+                candidate2 = (root->left != NULL)? getNearest(x, y, root->left) : root;
             }
             
             double distSquared2 = (candidate2->data->x-x)*(candidate2->data->x-x)+(candidate2->data->y-y)*(candidate2->data->y-y);
@@ -75,11 +75,11 @@ TreeNode* Starbucks_Sonodabe::getNearest(double x, double y, TreeNode* root){
         return candidate;
     }else{
         if(y < root->data->y){
-            candidate = (root->left == NULL)? getNearest(x, y, root->left) : root;
+            candidate = (root->left != NULL)? getNearest(x, y, root->left) : root;
             left = true;   
         }
         else{
-            candidate = (root->right == NULL)? getNearest(x, y, root->right) : root;
+            candidate = (root->right != NULL)? getNearest(x, y, root->right) : root;
             left = false;
         }
         
@@ -89,10 +89,10 @@ TreeNode* Starbucks_Sonodabe::getNearest(double x, double y, TreeNode* root){
             TreeNode* candidate2;
             
             if(left){
-                candidate2 = (root->right == NULL)? getNearest(x, y, root->right) : root;
+                candidate2 = (root->right != NULL)? getNearest(x, y, root->right) : root;
             }
             else{
-                candidate2 = (root->left == NULL)? getNearest(x, y, root->left) : root;
+                candidate2 = (root->left != NULL)? getNearest(x, y, root->left) : root;
             }
             
             double distSquared2 = (candidate2->data->x-x)*(candidate2->data->x-x)+(candidate2->data->y-y)*(candidate2->data->y-y);
