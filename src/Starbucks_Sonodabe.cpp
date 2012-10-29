@@ -66,7 +66,7 @@ TreeNode* Starbucks_Sonodabe::getNearest(double x, double y, TreeNode* root){
         distSquared = (candidate->data->x-x)*(candidate->data->x-x)+(candidate->data->y-y)*(candidate->data->y-y);
         distFromBorder = root->data->x - x;
 
-        if(distFromBorder*distFromBorder< distSquared){
+        if(distFromBorder*distFromBorder <= distSquared){
             TreeNode* candidate2;
             
             if(left)
@@ -101,7 +101,7 @@ TreeNode* Starbucks_Sonodabe::getNearest(double x, double y, TreeNode* root){
         distSquared = (candidate->data->x-x)*(candidate->data->x-x)+(candidate->data->y-y)*(candidate->data->y-y);
         distFromBorder = root->data->y - y;
         
-        if(distFromBorder*distFromBorder< distSquared){
+        if(distFromBorder*distFromBorder <= distSquared){
             TreeNode* candidate2;
             
             if(left)
