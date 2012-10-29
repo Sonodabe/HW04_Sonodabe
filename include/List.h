@@ -3,6 +3,7 @@
 
 class List {
 public:
+    ~List();
     List(Entry* entries, int len);
     List(Entry* entries, int len, bool x);
     Node* sentinel;

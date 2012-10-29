@@ -20,6 +20,11 @@ List::List(Entry* entries, int len, bool x){
     insertAll(entries, len);
 }
 
+List::~List(){
+    delete sentinel;
+    sentinel = NULL;
+}
+
 void List::insertAll(Entry* entries, int len){
     for(int i = 0; i<len; i++)
         insert(entries+i);

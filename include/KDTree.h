@@ -3,5 +3,6 @@
 
 class KDTree {
 public:
+    ~KDTree();
     TreeNode*root;        
 };

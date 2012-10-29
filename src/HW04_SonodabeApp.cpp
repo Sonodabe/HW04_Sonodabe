@@ -29,10 +29,7 @@ void HW04_SonodabeApp::setup()
     Starbucks_Sonodabe* test = new Starbucks_Sonodabe;
     test->build(first, n);
     delete [] first;
-    List* list = new List(first, n);
-    
-    Entry* closest = test->getNearest(.36434, .85654);
-    Entry* closer = test->getManNearest(.36434, .85654, list);
+    Entry* closest = test->getNearest(0, 0);
     
     
     
