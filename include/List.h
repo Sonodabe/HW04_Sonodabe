@@ -5,7 +5,6 @@ class List {
 public:
     List(Entry* entries, int len);
     List(Entry* entries, int len, bool x);
-    ~List();
     Node* sentinel;
     Node* getMedian();
     void insertAll(Entry* entries, int len);

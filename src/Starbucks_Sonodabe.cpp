@@ -2,10 +2,14 @@
 
 
 void Starbucks_Sonodabe::build(Entry* c, int n){
-    List* list = new List(c, n);
+    Entry* entries = new Entry[n];
+    for(int i = 0; i<n; i++)
+        entries[i] = c[i];
     
+    List* list = new List(entries, n);
     tree = new KDTree;
     tree->root = buildTree(list, true);
+    delete [] list;
 }
 
 TreeNode* Starbucks_Sonodabe::buildTree(List* list, bool onX){
@@ -13,10 +17,16 @@ TreeNode* Starbucks_Sonodabe::buildTree(List* list, bool onX){
         return NULL;
     
     TreeNode* root = new TreeNode;
+    List* left = list->split(true);
+    List* right = list->split(false);
     root->data = list->getMedian()->data;
-    root->left = buildTree(list->split(true), !onX);
-    root->right = buildTree(list->split(false), !onX); 
+    root->left = buildTree(left, !onX);
+    root->right = buildTree(right, !onX); 
     root->isX = onX;
+    
+    delete [] left;
+    delete [] right;
+    
     
     return root;
 }

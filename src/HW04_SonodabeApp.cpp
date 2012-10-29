@@ -4,6 +4,8 @@
 #include "Starbucks_Sonodabe.h"
 #include <iostream>
 #include <fstream>
+#include <time.h>
+
 
 using namespace ci;
 using namespace ci::app;
@@ -26,9 +28,12 @@ void HW04_SonodabeApp::setup()
     int n = count;
     Starbucks_Sonodabe* test = new Starbucks_Sonodabe;
     test->build(first, n);
+    delete [] first;
     List* list = new List(first, n);
-    Entry* closest = test->getNearest(.93202, .23674);
-    Entry* closer = test->getManNearest(.93202, .23674, list);
+    
+    Entry* closest = test->getNearest(.36434, .85654);
+    Entry* closer = test->getManNearest(.36434, .85654, list);
+    
     
     
 }

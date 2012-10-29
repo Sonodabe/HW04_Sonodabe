@@ -34,3 +34,7 @@ xcode/build/HW04_Sonodabe.build/Debug/HW04_Sonodabe.build/HW04_Sonodabe.hmap
 xcode/.DS_Store
 
 *.xcbkptlist
+
+*.xcbkptlist
+
+xcode/HW04_Sonodabe.xcodeproj/xcuserdata/brandonsonoda.xcuserdatad/xcdebugger/Breakpoints.xcbkptlist

@@ -100,7 +100,9 @@ Entry* List::remove(Node* toBeRemoved){
 
 void List::insertAndCheck(Entry* toInsert){
     Node* insertee = new Node;
+    insertee->data = new Entry;
     insertee->data = toInsert;
+    
     double posX = insertee->data->x;
     double posY = insertee->data->y;
     Node* cur = sentinel->next;
@@ -149,7 +151,9 @@ void List::insertAndCheck(Entry* toInsert){
 
 void List::insert(Entry* toInsert){
     Node* insertee = new Node;
+    insertee->data = new Entry;
     insertee->data = toInsert;
+
     double posX = toInsert->x;
     double posY = toInsert->y;
     Node* cur = sentinel->next;
