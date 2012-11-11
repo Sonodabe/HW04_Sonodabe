@@ -13,4 +13,8 @@ public:
     Entry* data;
     //True if this is an x level split, false otherwise
     bool isX;
+    
+    int r; 
+    int g;
+    int b;
 };

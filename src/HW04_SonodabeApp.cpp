@@ -11,8 +11,8 @@ using namespace ci;
 using namespace ci::app;
 using namespace std;
 
-static const int appWidth = 500;
-static const int appHeight = 500;
+static const int appWidth = 700;
+static const int appHeight = 700;
 static const int textureSize = 1024;
 
 class HW04_SonodabeApp : public AppBasic {
@@ -23,6 +23,8 @@ public:
 	void update();
 	void draw();
     void prepareSettings(Settings* settings);
+    void drawMap(TreeNode* root);
+    void colorMap();
     Entry* createArray();
     Starbucks_Sonodabe* test; 
     
@@ -45,34 +47,57 @@ void HW04_SonodabeApp::setup()
     test = new Starbucks_Sonodabe;
     test->build(first, n);
     delete [] first;  
-    Entry* closest= test->getNearest(.7432, .6105);
-    int x;
-    
-    
-    int count = 1;
-    int tempX, tempY, index;
+    drawMap(test->tree->root);
+    colorMap();
+}
+
+void HW04_SonodabeApp::colorMap(){
+    TreeNode* closest;
+    double cx, cy;
+    int index;
     uint8_t* data_array = (*mySurface).getData();
-    Node* cur = test->list->sentinel->next;
-    int minY = 500;
-    while(cur!= test->list->sentinel){
-        tempX = (int)(appWidth*(cur->data->x));
-        tempY = appHeight-(int)(appHeight*(cur->data->y));
-        index = 3*(tempY*textureSize+tempX);
-        if(tempY < minY) minY = tempY;
-    
-        console() << count++ << ": " << tempX << ", " << tempY << std::endl;
+    for(int posX = 0; posX < appWidth; posX++){
+        for(int posY = 0; posY < appHeight; posY++){
+            cx = (double)posX/appWidth;
+            cy = 1-(double)posY/appHeight;
+            closest = test->getNearest(cx, cy, test->tree->root);
+            index = 3*(posY*textureSize+posX);
+            if(index>=0 && index < textureSize*textureSize*3){
+                data_array[index] = closest->r;
+                data_array[index+1] = closest->g;
+                data_array[index+2] = closest->b;
+            } 
+        }
         
-        if(index>=0 && index < textureSize*textureSize*3){
-            data_array[index] = tempX*256/appWidth;
-            data_array[index+1] = rand()%256;
-            data_array[index+2] = tempY*256/appHeight;
-        } 
-        cur = cur->next;
     }
+}
+
+void HW04_SonodabeApp::drawMap(TreeNode* root){
+    if(root == NULL)
+        return;
     
-    console() << minY << std::endl;
+    uint8_t* data_array = (*mySurface).getData();
+    
+    drawMap(root->left);
+    
+    int tempX = (int)(appWidth*(root->data->x));
+    int tempY = appHeight-(int)(appHeight*(root->data->y));
+    int index = 3*(tempY*textureSize+tempX);
+    
+    console() << count++ << ": " << tempX << ", " << tempY << std::endl;
+    
+    if(index>=0 && index < textureSize*textureSize*3){
+        data_array[index] = root->r;
+        data_array[index+1] = root->g;
+        data_array[index+2] = root->b;
+    } 
+    
+    drawMap(root->right);
+    
     
 }
+
+
 
 
 
@@ -116,7 +141,19 @@ Entry* HW04_SonodabeApp::createArray(){
 
 void HW04_SonodabeApp::mouseDown( MouseEvent event )
 {
+    double mouseX, mouseY;
+    uint8_t* data_array = (*mySurface).getData();
+    mouseX = 1.0*event.getX()/appWidth;
+    mouseY = 1-1.0*event.getY()/appHeight;
+    Entry* close= test->getNearest(mouseX, mouseY);
     
+    int tempX = (int)(appWidth*(close->x));
+    int tempY = appHeight-(int)(appHeight*(close->y));
+    
+    console() << close->identifier << std::endl;
+    
+
+     
 }
 
 void HW04_SonodabeApp::update()
@@ -128,16 +165,6 @@ void HW04_SonodabeApp::draw()
 {
     gl::draw(*mySurface);
 
-}
-
-void drawPixel(int posX, int posY, uint8_t* data){
-    int index = 3*(posY*appWidth+posX);
-    if(index>=0 && index <appHeight*appWidth*3){
-        data[index] = 0;
-        data[index+1] = 0;
-        data[index+2] = 0;
-    }       
-    
 }
 
 CINDER_APP_BASIC( HW04_SonodabeApp, RendererGl )

@@ -22,6 +22,9 @@ TreeNode* Starbucks_Sonodabe::buildTree(List* list, bool onX){
     List* left = list->split(true);
     List* right = list->split(false);
     root->data = list->getMedian()->data;
+    root->r = rand()%256;
+    root->g = rand()%256;
+    root->b = rand()%256;
     if(left->length != 0)
         root->left = buildTree(left, !onX);
     else
