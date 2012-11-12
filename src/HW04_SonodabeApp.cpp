@@ -1,6 +1,7 @@
 #include "cinder/app/AppBasic.h"
 #include "cinder/gl/gl.h"
 #include "Starbucks_Sonodabe.h"
+#include "cinder/ImageIo.h"
 #include "cinder/gl/Texture.h"
 #include <iostream>
 #include <fstream>
@@ -20,6 +21,7 @@ public:
     int count;
 	void setup();
 	void mouseDown( MouseEvent event );	
+    void keyDown(KeyEvent event);
 	void update();
 	void draw();
     void prepareSettings(Settings* settings);
@@ -29,11 +31,15 @@ public:
     void changeColors(TreeNode* root);
     Entry* createArray();
     Starbucks_Sonodabe* test; 
-    int getMax(TreeNode* root);
+    pair<int, int> getMax(TreeNode* root);
     int maxDiff;
+    int minDiff;
     
 private:
     Surface* mySurface;
+    float closeX, closeY;
+    gl::Texture map;
+    bool show;
 
 };
 
@@ -44,9 +50,14 @@ void HW04_SonodabeApp::prepareSettings(Settings* settings){
 
 void HW04_SonodabeApp::setup()
 {
+    map = gl::Texture(loadImage("../../../Resources/Map.png"));
+    show = false;
+    
     count = 0;
     mySurface = new Surface(textureSize, textureSize, false);
     Entry* first = createArray();
+    closeX = -50;
+    closeY = -50;
     int n = count;
     test = new Starbucks_Sonodabe;
     test->build(first, n);
@@ -54,14 +65,12 @@ void HW04_SonodabeApp::setup()
     count = 0;
     uint8_t* data_array = (*mySurface).getData();
     
-    console() << "Built Tree, getting census data..." << std::endl;
     getData();
-    maxDiff = getMax(test->tree->root);
-    console() << maxDiff << std::endl;
+    pair<int, int> extrema = getMax(test->tree->root);
+    maxDiff = extrema.first;
+    minDiff = extrema.second;
     changeColors(test->tree->root);
-    console() << "Got data, coloring map..." << std::endl;
-    colorMap(data_array);
-    console() << "Colored Map, drawing points..." << std::endl;
+       colorMap(data_array);
     drawMap(test->tree->root, data_array);
 
 
@@ -78,19 +87,16 @@ void HW04_SonodabeApp::changeColors(TreeNode* root){
     changeColors(root->right);
     
     int deltaPop = (root->data->census2) - (root->data->census1);
-    
-    int ratio = (int)((255.0*deltaPop)/maxDiff);
-    console() << deltaPop<< std::endl;
-    
-    if(ratio < 0){
+        
+    if(deltaPop <= 0){
+        int ratio = (int)((220.0*deltaPop)/minDiff);
         ratio = abs(ratio);
-        if(ratio > 255)
-            ratio = 255;
-        root->data->r = ratio;
+        root->data->r = ratio+35;
         root->data->g = 0;
     }else{
+        int ratio = (int)((220.0*deltaPop)/maxDiff);
         root->data->r = 0;
-        root->data->g = ratio;
+        root->data->g = ratio+35;
     }
 }
 
@@ -108,10 +114,9 @@ void HW04_SonodabeApp::colorMap(uint8_t* data_array){
             if(index>=0 && index < textureSize*textureSize*3){
                 data_array[index] = closest->r;
                 data_array[index+1] = closest->g;
-                data_array[index+2] = 0;
-            } 
+                data_array[index+2] = 120;
+            }
         }
-        
     }
 }
 
@@ -126,22 +131,27 @@ void HW04_SonodabeApp::drawMap(TreeNode* root, uint8_t* data_array){
     int index = 3*(tempY*textureSize+tempX);
     if(index>=0 && index < textureSize*textureSize*3){
         data_array[index] = 255;
-        data_array[index+1] = 255;
+        data_array[index+1] = 0;
         data_array[index+2] = 255;
     } 
     drawMap(root->right, data_array);
 }
 
-int HW04_SonodabeApp::getMax(TreeNode* root){
+pair<int, int> HW04_SonodabeApp::getMax(TreeNode* root){
     if(root == NULL)
-        return 0;
+        return std::make_pair(0, 0);
     
     
-    int change = root->data->census2 - root->data->census1;
-    int maxLeft = getMax(root->left);
-    int maxRight = getMax(root->right);
+    pair<int, int> leftR = getMax(root->left);
+    pair<int, int> rightR = getMax(root->right);
     
-    return max(max(change, maxLeft), maxRight);
+    int meMax = root->data->census2 - root->data->census1;
+    int meMin = root->data->census1 - root->data->census2;
+    
+    int maxVal = max(max(leftR.first, rightR.first), meMax);
+    int minVal = max(max(leftR.second, rightR.second), meMin);
+
+    return std::make_pair(maxVal, minVal);
 }
 
 
@@ -241,19 +251,19 @@ void HW04_SonodabeApp::getData(){
 void HW04_SonodabeApp::mouseDown( MouseEvent event )
 {
     double mouseX, mouseY;
-//    uint8_t* data_array = (*mySurface).getData();
     mouseX = 1.0*event.getX()/appWidth;
     mouseY = 1-1.0*event.getY()/appHeight;
     Entry* close= test->getNearest(mouseX, mouseY);
-    
-//    int tempX = (int)(appWidth*(close->x));
-//    int tempY = appHeight-(int)(appHeight*(close->y));
-    
     console() << close->identifier << std::endl;
     
-
-     
+    closeX = (appWidth*(close->x));
+    closeY = appHeight-(appHeight*(close->y));
 }
+
+void HW04_SonodabeApp::keyDown( KeyEvent event )
+{
+    show = !show;
+}  
 
 void HW04_SonodabeApp::update()
 {
@@ -262,7 +272,13 @@ void HW04_SonodabeApp::update()
 
 void HW04_SonodabeApp::draw()
 {
-    gl::draw(*mySurface);
+    if(show)
+         gl::draw(map  , getWindowBounds());
+    else
+        gl::draw(*mySurface);
+
+    gl::drawSolidCircle( Vec2f( closeX, closeY), 5.0f);
+
 
 }
 
