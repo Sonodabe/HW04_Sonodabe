@@ -158,9 +158,9 @@ void HW04_SonodabeApp::colorCoverage(uint8_t* data_array){
             closest = (Entry_Sonodabe*)test->getNearest(cx, cy);
             index = 3*(posY*textureSize+posX);
             if(index>=0 && index < textureSize*textureSize*3){
-                data_array[index] = 255-255*closest->pixels/maxPix;
+                data_array[index] = 255;
                 data_array[index+1] = 255-255*closest->pixels/maxPix;
-                data_array[index+2] =  255*closest->pixels/maxPix;
+                data_array[index+2] =  0;
             }
         }
     }
