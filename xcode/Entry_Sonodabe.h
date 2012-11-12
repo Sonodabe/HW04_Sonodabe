@@ -7,4 +7,5 @@ public:
     int census2;
     int r;
     int g; 
+    int pixels;
 };

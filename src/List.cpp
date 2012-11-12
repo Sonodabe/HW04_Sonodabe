@@ -122,6 +122,8 @@ void List::insertAndCheck(Entry_Sonodabe* toInsert){
     insertee->data->census2 = toInsert->census2;
     insertee->data->r = toInsert->r;
     insertee->data->g = toInsert->g;
+    insertee->data->pixels = 0;
+
 
     
     
@@ -187,6 +189,8 @@ void List::insert(Entry_Sonodabe* toInsert){
     insertee->data->census2 = toInsert->census2;
     insertee->data->r = toInsert->r;
     insertee->data->g = toInsert->g;
+    insertee->data->pixels = 0;
+    
 
     double posX = toInsert->x;
     double posY = toInsert->y;

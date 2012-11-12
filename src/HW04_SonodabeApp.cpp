@@ -7,6 +7,27 @@
 #include <fstream>
 #include <time.h>
 
+/**
+ Homework 4 Part 3
+ Brandon Sonoda
+ CSE 274 11:15-12:30
+ 
+ Switch between the map and the rendering by pressing any key (A)
+ Magenta dots represent starbucks locations
+ 
+ Click anywhere to locate the nearest starbucks (B)
+ 
+ The rendered map is broken into blocks around the nearest starbucks (C)
+ 
+ The color of the block represents that change of population density for that one starbucks (E? F? EFG?)
+ Red =  negative change in people per starbucks
+ Green = positive change in ppl/sbs
+ 
+ I didn't know if my coloring would suffice for the EFG so I added a area coloring as well. (H)
+ blue = largest area
+ yellow = smallest area
+ **/
+
 
 using namespace ci;
 using namespace ci::app;
@@ -27,6 +48,7 @@ public:
     void prepareSettings(Settings* settings);
     void drawMap(TreeNode* root, uint8_t* data_array);
     void colorMap(uint8_t* data_array);
+    void colorCoverage(uint8_t* data_array);
     void getData();
     void changeColors(TreeNode* root);
     Entry* createArray();
@@ -34,12 +56,14 @@ public:
     pair<int, int> getMax(TreeNode* root);
     int maxDiff;
     int minDiff;
+    int maxPix;
     
 private:
-    Surface* mySurface;
+    Surface* popDensityChange;
+    Surface* areaCoverage;
     float closeX, closeY;
     gl::Texture map;
-    bool show;
+    int show;
 
 };
 
@@ -51,33 +75,33 @@ void HW04_SonodabeApp::prepareSettings(Settings* settings){
 void HW04_SonodabeApp::setup()
 {
     map = gl::Texture(loadImage("../../../Resources/Map.png"));
-    show = false;
-    
+    show = 0;
+    maxPix = 0;
     count = 0;
-    mySurface = new Surface(textureSize, textureSize, false);
-    Entry* first = createArray();
     closeX = -50;
     closeY = -50;
+    
+    popDensityChange = new Surface(textureSize, textureSize, false);
+    areaCoverage = new Surface(textureSize, textureSize, false);
+    Entry* first = createArray();
+
     int n = count;
     test = new Starbucks_Sonodabe;
     test->build(first, n);
     delete [] first; 
     count = 0;
-    uint8_t* data_array = (*mySurface).getData();
+    uint8_t* data_array = (*popDensityChange).getData();
     
     getData();
     pair<int, int> extrema = getMax(test->tree->root);
     maxDiff = extrema.first;
     minDiff = extrema.second;
     changeColors(test->tree->root);
-       colorMap(data_array);
+    colorMap(data_array);
     drawMap(test->tree->root, data_array);
-
-
-
-
     
-
+    uint8_t* data_array2 = (*areaCoverage).getData();
+    colorCoverage(data_array2);
 }
 
 void HW04_SonodabeApp::changeColors(TreeNode* root){
@@ -114,7 +138,27 @@ void HW04_SonodabeApp::colorMap(uint8_t* data_array){
             if(index>=0 && index < textureSize*textureSize*3){
                 data_array[index] = closest->r;
                 data_array[index+1] = closest->g;
-                data_array[index+2] = 120;
+                data_array[index+2] = 0;
+                closest->pixels++;
+            }
+        }
+    }
+}
+
+void HW04_SonodabeApp::colorCoverage(uint8_t* data_array){
+    Entry_Sonodabe* closest;
+    double cx, cy;
+    int index;
+    for(int posX = 0; posX < appWidth; posX++){
+        for(int posY = 0; posY < appHeight; posY++){
+            cx = (double)posX/appWidth;
+            cy = 1-(double)posY/appHeight;
+            closest = (Entry_Sonodabe*)test->getNearest(cx, cy);
+            index = 3*(posY*textureSize+posX);
+            if(index>=0 && index < textureSize*textureSize*3){
+                data_array[index] = 255-255*closest->pixels/maxPix;
+                data_array[index+1] = 255-255*closest->pixels/maxPix;
+                data_array[index+2] =  255*closest->pixels/maxPix;
             }
         }
     }
@@ -123,6 +167,10 @@ void HW04_SonodabeApp::colorMap(uint8_t* data_array){
 void HW04_SonodabeApp::drawMap(TreeNode* root, uint8_t* data_array){
     if(root == NULL)
         return;
+    
+    //Don't mind me, I'm just along for the ride. 
+    if(root->data->pixels > maxPix)
+        maxPix = root->data->pixels; //You know, just finding the max area.
     
     drawMap(root->left, data_array);
     
@@ -253,16 +301,14 @@ void HW04_SonodabeApp::mouseDown( MouseEvent event )
     double mouseX, mouseY;
     mouseX = 1.0*event.getX()/appWidth;
     mouseY = 1-1.0*event.getY()/appHeight;
-    Entry* close= test->getNearest(mouseX, mouseY);
-    console() << close->identifier << std::endl;
-    
+    Entry* close= test->getNearest(mouseX, mouseY);    
     closeX = (appWidth*(close->x));
     closeY = appHeight-(appHeight*(close->y));
 }
 
 void HW04_SonodabeApp::keyDown( KeyEvent event )
 {
-    show = !show;
+    show = (++show)%3;
 }  
 
 void HW04_SonodabeApp::update()
@@ -272,10 +318,14 @@ void HW04_SonodabeApp::update()
 
 void HW04_SonodabeApp::draw()
 {
-    if(show)
-         gl::draw(map  , getWindowBounds());
-    else
-        gl::draw(*mySurface);
+    if(show == 0)
+        gl::draw(*popDensityChange);
+    else{
+        if(show == 1){
+            gl::draw(*areaCoverage);
+        }else
+            gl::draw(map  , getWindowBounds());
+    }
 
     gl::drawSolidCircle( Vec2f( closeX, closeY), 5.0f);
 

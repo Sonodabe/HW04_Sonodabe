@@ -14,6 +14,8 @@ void Starbucks_Sonodabe::build(Entry* c, int n){
         cur->census2 = 0;
         cur->r = 0;
         cur->g = 0;
+        cur ->pixels = 0;
+
     }
     
     list = new List(entries, n);
