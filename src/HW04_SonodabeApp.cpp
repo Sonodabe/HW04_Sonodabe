@@ -102,6 +102,8 @@ void HW04_SonodabeApp::setup()
     
     uint8_t* data_array2 = (*areaCoverage).getData();
     colorCoverage(data_array2);
+    drawMap(test->tree->root, data_array2);
+
 }
 
 void HW04_SonodabeApp::changeColors(TreeNode* root){
