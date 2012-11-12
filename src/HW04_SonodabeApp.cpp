@@ -25,8 +25,12 @@ public:
     void prepareSettings(Settings* settings);
     void drawMap(TreeNode* root, uint8_t* data_array);
     void colorMap(uint8_t* data_array);
+    void getData();
+    void changeColors(TreeNode* root);
     Entry* createArray();
     Starbucks_Sonodabe* test; 
+    int getMax(TreeNode* root);
+    int maxDiff;
     
 private:
     Surface* mySurface;
@@ -49,10 +53,47 @@ void HW04_SonodabeApp::setup()
     delete [] first; 
     count = 0;
     uint8_t* data_array = (*mySurface).getData();
+    
+    console() << "Built Tree, getting census data..." << std::endl;
+    getData();
+    maxDiff = getMax(test->tree->root);
+    console() << maxDiff << std::endl;
+    changeColors(test->tree->root);
+    console() << "Got data, coloring map..." << std::endl;
     colorMap(data_array);
+    console() << "Colored Map, drawing points..." << std::endl;
     drawMap(test->tree->root, data_array);
 
+
+
+
+    
+
 }
+
+void HW04_SonodabeApp::changeColors(TreeNode* root){
+    if(root == NULL)
+        return;
+    changeColors(root->left);
+    changeColors(root->right);
+    
+    int deltaPop = (root->data->census2) - (root->data->census1);
+    
+    int ratio = (int)((255.0*deltaPop)/maxDiff);
+    console() << deltaPop<< std::endl;
+    
+    if(ratio < 0){
+        ratio = abs(ratio);
+        if(ratio > 255)
+            ratio = 255;
+        root->data->r = ratio;
+        root->data->g = 0;
+    }else{
+        root->data->r = 0;
+        root->data->g = ratio;
+    }
+}
+
 
 void HW04_SonodabeApp::colorMap(uint8_t* data_array){
     Entry_Sonodabe* closest;
@@ -67,7 +108,7 @@ void HW04_SonodabeApp::colorMap(uint8_t* data_array){
             if(index>=0 && index < textureSize*textureSize*3){
                 data_array[index] = closest->r;
                 data_array[index+1] = closest->g;
-                data_array[index+2] = closest->b;
+                data_array[index+2] = 0;
             } 
         }
         
@@ -89,6 +130,18 @@ void HW04_SonodabeApp::drawMap(TreeNode* root, uint8_t* data_array){
         data_array[index+2] = 255;
     } 
     drawMap(root->right, data_array);
+}
+
+int HW04_SonodabeApp::getMax(TreeNode* root){
+    if(root == NULL)
+        return 0;
+    
+    
+    int change = root->data->census2 - root->data->census1;
+    int maxLeft = getMax(root->left);
+    int maxRight = getMax(root->right);
+    
+    return max(max(change, maxLeft), maxRight);
 }
 
 
@@ -128,6 +181,58 @@ Entry* HW04_SonodabeApp::createArray(){
     input.close();
     
     return stores;
+}
+
+void HW04_SonodabeApp::getData(){
+    int buffer;
+    Entry_Sonodabe* closest;
+    int population;
+    double latX, latY;
+    ifstream cen1("../../../resources/Census_2000.csv");
+    while(cen1.good()){
+        cen1 >> buffer;
+        cen1.get();
+        cen1 >> buffer;
+        cen1.get();
+        cen1 >> buffer;
+        cen1.get();
+        cen1 >> buffer;
+        cen1.get();
+        cen1 >> population;
+        cen1.get();
+        cen1 >> latX;
+        cen1.get();
+        cen1 >> latY;
+        cen1.get();
+        
+        
+        closest = (Entry_Sonodabe*)test->getNearest(latX, latY);
+        closest->census1 += population;
+    }
+    cen1.close();
+    
+    ifstream cen2("../../../resources/Census_2010.csv");
+    while(cen2.good()){
+        cen2 >> buffer;
+        cen2.get();
+        cen2 >> buffer;
+        cen2.get();
+        cen2 >> buffer;
+        cen2.get();
+        cen2 >> buffer;
+        cen2.get();
+        cen2 >> population;
+        cen2.get();
+        cen2 >> latX;
+        cen2.get();
+        cen2 >> latY;
+        cen2.get();
+
+        closest = (Entry_Sonodabe*)test->getNearest(latX, latY);
+        closest->census2 += population;
+
+    }
+    cen2.close();
 }
 
 

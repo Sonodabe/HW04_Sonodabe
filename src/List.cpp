@@ -53,7 +53,6 @@ List* List::split(bool first){
             newEntries[i].census2 = cur->data->census2;
             newEntries[i].r = cur->data->r;
             newEntries[i].g = cur->data->g;
-            newEntries[i].b = cur->data->b;
 
             cur = cur->next;
             i++;
@@ -75,7 +74,6 @@ List* List::split(bool first){
             newEntries[i].census2 = cur->data->census2;
             newEntries[i].r = cur->data->r;
             newEntries[i].g = cur->data->g;
-            newEntries[i].b = cur->data->b;
             cur = cur->next;
             i++;
         }
@@ -124,7 +122,6 @@ void List::insertAndCheck(Entry_Sonodabe* toInsert){
     insertee->data->census2 = toInsert->census2;
     insertee->data->r = toInsert->r;
     insertee->data->g = toInsert->g;
-    insertee->data->b = toInsert->b;
 
     
     
@@ -190,7 +187,6 @@ void List::insert(Entry_Sonodabe* toInsert){
     insertee->data->census2 = toInsert->census2;
     insertee->data->r = toInsert->r;
     insertee->data->g = toInsert->g;
-    insertee->data->b = toInsert->b;
 
     double posX = toInsert->x;
     double posY = toInsert->y;

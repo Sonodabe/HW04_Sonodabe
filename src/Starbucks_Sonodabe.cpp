@@ -12,9 +12,8 @@ void Starbucks_Sonodabe::build(Entry* c, int n){
         cur->y = (c+i)->y;
         cur->census1 = 0;
         cur->census2 = 0;
-        cur->r = rand()%256;
-        cur->g = rand()%256;
-        cur->b = rand()%256;
+        cur->r = 0;
+        cur->g = 0;
     }
     
     list = new List(entries, n);
