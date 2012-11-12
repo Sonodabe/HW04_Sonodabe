@@ -2,11 +2,13 @@
 
 
 void Starbucks_Sonodabe::build(Entry* c, int n){
-    Entry* entries = new Entry[n];
+    Entry_Sonodabe* entries = new Entry_Sonodabe[n];
     for(int i = 0; i<n; i++){
         (entries+i)->identifier = (c+i)->identifier;
         (entries+i)->x = (c+i)->x;
         (entries+i)->y = (c+i)->y;
+        (entries+i)->census1 = 0;
+        (entries+i)->census2 = 0;
     }
     
     list = new List(entries, n);
@@ -130,7 +132,7 @@ TreeNode* Starbucks_Sonodabe::getNearest(double x, double y, TreeNode* root){
 }
 
 
-Entry* Starbucks_Sonodabe::getManNearest(double x, double y, List* list){
+Entry_Sonodabe* Starbucks_Sonodabe::getManNearest(double x, double y, List* list){
     Node* cur = list->sentinel->next;
     double distanceSq = (cur->data->x-x)*(cur->data->x-x)+(cur->data->y-y)*(cur->data->y-y);
     Node* bestSoFar = cur;

@@ -1,5 +1,5 @@
 #pragma once
-#include "Starbucks.h"
+#include "Entry_Sonodabe.h"
 
 class TreeNode {
 public:
@@ -10,7 +10,7 @@ public:
     //Contains all of the values greater than this node
     TreeNode* right;
     //The data of the entry
-    Entry* data;
+    Entry_Sonodabe* data;
     //True if this is an x level split, false otherwise
     bool isX;
     

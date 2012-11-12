@@ -1,6 +1,6 @@
 #include "List.h"
 
-List::List(Entry* entries, int len){
+List::List(Entry_Sonodabe* entries, int len){
     sentinel = new Node;
     isX = true;
     sentinel->next = sentinel;
@@ -10,7 +10,7 @@ List::List(Entry* entries, int len){
     insertAndCheckAll(entries, len);
 }
 
-List::List(Entry* entries, int len, bool x){
+List::List(Entry_Sonodabe* entries, int len, bool x){
     sentinel = new Node;
     isX = x;
     sentinel->next = sentinel;
@@ -25,12 +25,12 @@ List::~List(){
     sentinel = NULL;
 }
 
-void List::insertAll(Entry* entries, int len){
+void List::insertAll(Entry_Sonodabe* entries, int len){
     for(int i = 0; i<len; i++)
         insert(entries+i);
 }
 
-void List::insertAndCheckAll(Entry* entries, int len){
+void List::insertAndCheckAll(Entry_Sonodabe* entries, int len){
     for(int i = 0; i<len; i++)
         insertAndCheck(entries+i);
 }
@@ -38,10 +38,10 @@ void List::insertAndCheckAll(Entry* entries, int len){
 List* List::split(bool first){
     List* newList;
     int len;
-    Entry* newEntries;
+    Entry_Sonodabe* newEntries;
     if(first){
         len = length/2;
-        newEntries = new Entry[len];
+        newEntries = new Entry_Sonodabe[len];
         int i = 0;
         Node* cur = sentinel->next;
         
@@ -57,7 +57,7 @@ List* List::split(bool first){
             len = length-length/2-1;
         else
             len = length-length/2;
-        newEntries = new Entry[len];
+        newEntries = new Entry_Sonodabe[len];
         
         Node* cur = getMedian()->next;
         int i = 0;
@@ -89,24 +89,29 @@ Node* List::getMedian(){
     return cur;
 }
 
-Entry* List::remove(Node* toBeRemoved){
+Entry_Sonodabe* List::remove(Node* toBeRemoved){
     if(toBeRemoved == NULL || toBeRemoved == sentinel)
         return NULL;
     
     toBeRemoved->prev->next = toBeRemoved->next;
     toBeRemoved->next->prev = toBeRemoved->prev;
     
-    Entry* data = toBeRemoved->data;
+    Entry_Sonodabe* data = toBeRemoved->data;
     delete toBeRemoved;
     length--;
     return data;
 }
 
 
-void List::insertAndCheck(Entry* toInsert){
+void List::insertAndCheck(Entry_Sonodabe* toInsert){
     Node* insertee = new Node;
-    insertee->data = new Entry;
-    insertee->data = toInsert;
+    insertee->data = new Entry_Sonodabe;
+    insertee->data->x = toInsert->x;
+    insertee->data->y = toInsert->y;
+    insertee->data->identifier = toInsert->identifier;
+    insertee->data->census1 = toInsert->census1;
+    insertee->data->census2 = toInsert->census2;
+    
     
     double posX = insertee->data->x;
     double posY = insertee->data->y;
@@ -154,10 +159,14 @@ void List::insertAndCheck(Entry* toInsert){
     length++;
 }
 
-void List::insert(Entry* toInsert){
+void List::insert(Entry_Sonodabe* toInsert){
     Node* insertee = new Node;
-    insertee->data = new Entry;
-    insertee->data = toInsert;
+    insertee->data = new Entry_Sonodabe;
+    insertee->data->x = toInsert->x;
+    insertee->data->y = toInsert->y;
+    insertee->data->identifier = toInsert->identifier;
+    insertee->data->census1 = toInsert->census1;
+    insertee->data->census2 = toInsert->census2;
 
     double posX = toInsert->x;
     double posY = toInsert->y;

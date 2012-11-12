@@ -1,4 +1,5 @@
-#include "Starbucks.h"
+#pragma once
+#include "Entry_Sonodabe.h"
 #include "List.h"
 #include "KDTree.h"
 
@@ -26,5 +27,5 @@ public:
     //Finds the nearest tree node when given an x and y coordinate and a subtree to search
     TreeNode* getNearest(double x, double y, TreeNode* root);
     //Finds the nearest starbucks using the brute force method... had to include this because sometimes the tree didnt working
-    Entry* getManNearest(double x, double y, List* list);    
+    Entry_Sonodabe* getManNearest(double x, double y, List* list);    
 };
