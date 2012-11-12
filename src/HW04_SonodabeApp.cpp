@@ -23,8 +23,8 @@ public:
 	void update();
 	void draw();
     void prepareSettings(Settings* settings);
-    void drawMap(TreeNode* root);
-    void colorMap();
+    void drawMap(TreeNode* root, uint8_t* data_array);
+    void colorMap(uint8_t* data_array);
     Entry* createArray();
     Starbucks_Sonodabe* test; 
     
@@ -46,21 +46,23 @@ void HW04_SonodabeApp::setup()
     int n = count;
     test = new Starbucks_Sonodabe;
     test->build(first, n);
-    delete [] first;  
-    drawMap(test->tree->root);
-    colorMap();
+    delete [] first; 
+    count = 0;
+    uint8_t* data_array = (*mySurface).getData();
+    colorMap(data_array);
+    drawMap(test->tree->root, data_array);
+
 }
 
-void HW04_SonodabeApp::colorMap(){
-    TreeNode* closest;
+void HW04_SonodabeApp::colorMap(uint8_t* data_array){
+    Entry_Sonodabe* closest;
     double cx, cy;
     int index;
-    uint8_t* data_array = (*mySurface).getData();
     for(int posX = 0; posX < appWidth; posX++){
         for(int posY = 0; posY < appHeight; posY++){
             cx = (double)posX/appWidth;
             cy = 1-(double)posY/appHeight;
-            closest = test->getNearest(cx, cy, test->tree->root);
+            closest = (Entry_Sonodabe*)test->getNearest(cx, cy);
             index = 3*(posY*textureSize+posX);
             if(index>=0 && index < textureSize*textureSize*3){
                 data_array[index] = closest->r;
@@ -72,29 +74,21 @@ void HW04_SonodabeApp::colorMap(){
     }
 }
 
-void HW04_SonodabeApp::drawMap(TreeNode* root){
+void HW04_SonodabeApp::drawMap(TreeNode* root, uint8_t* data_array){
     if(root == NULL)
         return;
     
-    uint8_t* data_array = (*mySurface).getData();
-    
-    drawMap(root->left);
+    drawMap(root->left, data_array);
     
     int tempX = (int)(appWidth*(root->data->x));
     int tempY = appHeight-(int)(appHeight*(root->data->y));
     int index = 3*(tempY*textureSize+tempX);
-    
-    console() << count++ << ": " << tempX << ", " << tempY << std::endl;
-    
     if(index>=0 && index < textureSize*textureSize*3){
-        data_array[index] = root->r;
-        data_array[index+1] = root->g;
-        data_array[index+2] = root->b;
+        data_array[index] = 255;
+        data_array[index+1] = 255;
+        data_array[index+2] = 255;
     } 
-    
-    drawMap(root->right);
-    
-    
+    drawMap(root->right, data_array);
 }
 
 
@@ -142,13 +136,13 @@ Entry* HW04_SonodabeApp::createArray(){
 void HW04_SonodabeApp::mouseDown( MouseEvent event )
 {
     double mouseX, mouseY;
-    uint8_t* data_array = (*mySurface).getData();
+//    uint8_t* data_array = (*mySurface).getData();
     mouseX = 1.0*event.getX()/appWidth;
     mouseY = 1-1.0*event.getY()/appHeight;
     Entry* close= test->getNearest(mouseX, mouseY);
     
-    int tempX = (int)(appWidth*(close->x));
-    int tempY = appHeight-(int)(appHeight*(close->y));
+//    int tempX = (int)(appWidth*(close->x));
+//    int tempY = appHeight-(int)(appHeight*(close->y));
     
     console() << close->identifier << std::endl;
     

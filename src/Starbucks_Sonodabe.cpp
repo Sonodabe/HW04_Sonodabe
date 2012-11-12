@@ -1,17 +1,24 @@
 #include "Starbucks_Sonodabe.h"
 
 
+
 void Starbucks_Sonodabe::build(Entry* c, int n){
     Entry_Sonodabe* entries = new Entry_Sonodabe[n];
+    Entry_Sonodabe* cur;
     for(int i = 0; i<n; i++){
-        (entries+i)->identifier = (c+i)->identifier;
-        (entries+i)->x = (c+i)->x;
-        (entries+i)->y = (c+i)->y;
-        (entries+i)->census1 = 0;
-        (entries+i)->census2 = 0;
+        cur = entries+i;
+        cur->identifier = (c+i)->identifier;
+        cur->x = (c+i)->x;
+        cur->y = (c+i)->y;
+        cur->census1 = 0;
+        cur->census2 = 0;
+        cur->r = rand()%256;
+        cur->g = rand()%256;
+        cur->b = rand()%256;
     }
     
     list = new List(entries, n);
+    
     tree = new KDTree;
     tree->root = buildTree(list, true);
 }
@@ -21,20 +28,22 @@ TreeNode* Starbucks_Sonodabe::buildTree(List* list, bool onX){
         return NULL;
     
     TreeNode* root = new TreeNode;
+    root->data = list->getMedian()->data;
+    if(root->data == NULL || root->data->identifier == "")
+        return NULL;
+
     List* left = list->split(true);
     List* right = list->split(false);
-    root->data = list->getMedian()->data;
-    root->r = rand()%256;
-    root->g = rand()%256;
-    root->b = rand()%256;
     if(left->length != 0)
         root->left = buildTree(left, !onX);
-    else
+    else {
         root->left = NULL;
+    }
     if(right->length != 0)
         root->right = buildTree(right, !onX);
-    else
+    else{
         root->right = NULL;
+    }
     root->isX = onX;
     
     delete  left;
@@ -71,7 +80,7 @@ TreeNode* Starbucks_Sonodabe::getNearest(double x, double y, TreeNode* root){
         distSquared = (candidate->data->x-x)*(candidate->data->x-x)+(candidate->data->y-y)*(candidate->data->y-y);
         distFromBorder = root->data->x - x;
 
-        if(distFromBorder*distFromBorder <= distSquared*1.15){
+        if(distFromBorder*distFromBorder <= distSquared*1.1){
             TreeNode* candidate2;
             
             if(left)
@@ -106,7 +115,7 @@ TreeNode* Starbucks_Sonodabe::getNearest(double x, double y, TreeNode* root){
         distSquared = (candidate->data->x-x)*(candidate->data->x-x)+(candidate->data->y-y)*(candidate->data->y-y);
         distFromBorder = root->data->y - y;
         
-        if(distFromBorder*distFromBorder <= distSquared*1.15){
+        if(distFromBorder*distFromBorder <= distSquared*1.1){
             TreeNode* candidate2;
             
             if(left)

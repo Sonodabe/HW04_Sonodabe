@@ -49,6 +49,12 @@ List* List::split(bool first){
             newEntries[i].identifier = cur->data->identifier;
             newEntries[i].x = cur->data->x;
             newEntries[i].y = cur->data->y;
+            newEntries[i].census1 = cur->data->census1;
+            newEntries[i].census2 = cur->data->census2;
+            newEntries[i].r = cur->data->r;
+            newEntries[i].g = cur->data->g;
+            newEntries[i].b = cur->data->b;
+
             cur = cur->next;
             i++;
         }
@@ -65,6 +71,11 @@ List* List::split(bool first){
             newEntries[i].identifier = cur->data->identifier;
             newEntries[i].x = cur->data->x;
             newEntries[i].y = cur->data->y;
+            newEntries[i].census1 = cur->data->census1;
+            newEntries[i].census2 = cur->data->census2;
+            newEntries[i].r = cur->data->r;
+            newEntries[i].g = cur->data->g;
+            newEntries[i].b = cur->data->b;
             cur = cur->next;
             i++;
         }
@@ -111,6 +122,10 @@ void List::insertAndCheck(Entry_Sonodabe* toInsert){
     insertee->data->identifier = toInsert->identifier;
     insertee->data->census1 = toInsert->census1;
     insertee->data->census2 = toInsert->census2;
+    insertee->data->r = toInsert->r;
+    insertee->data->g = toInsert->g;
+    insertee->data->b = toInsert->b;
+
     
     
     double posX = insertee->data->x;
@@ -123,16 +138,20 @@ void List::insertAndCheck(Entry_Sonodabe* toInsert){
         while(cur != sentinel && cur->data->x < posX){
             distX = distance(cur->data->x, posX);
             distY = distance(cur->data->y, posY);
-            if(distX <= 0.00001 && distY <= 0.00001)
+            if(distX <= 0.00001 && distY <= 0.00001){
+                delete insertee;
                 return;
+            }
             cur = cur->next;
         }
     }else{
         while(cur != sentinel && cur->data->y < posY){
             distX = distance(cur->data->x, posX);
             distY = distance(cur->data->y, posY);
-            if(distX <= 0.00001 && distY <= 0.00001)
+            if(distX <= 0.00001 && distY <= 0.00001){
+                delete insertee;
                 return;
+            }
             cur = cur->next;
         }
         
@@ -149,8 +168,10 @@ void List::insertAndCheck(Entry_Sonodabe* toInsert){
     
     distX = distance(cur->data->x, posX);
     distY = distance(cur->data->y, posY);
-    if(distX <= 0.00001 && distY <= 0.00001)
+    if(distX <= 0.00001 && distY <= 0.00001){
+        delete insertee;
         return;
+    }
     
     cur->prev->next = insertee;
     insertee->prev = cur->prev;
@@ -167,6 +188,9 @@ void List::insert(Entry_Sonodabe* toInsert){
     insertee->data->identifier = toInsert->identifier;
     insertee->data->census1 = toInsert->census1;
     insertee->data->census2 = toInsert->census2;
+    insertee->data->r = toInsert->r;
+    insertee->data->g = toInsert->g;
+    insertee->data->b = toInsert->b;
 
     double posX = toInsert->x;
     double posY = toInsert->y;
