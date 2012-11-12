@@ -26,6 +26,9 @@
  
  Coolest idea, 69 minutes til due date: Why don't I compute the crowdedness of each starbucks by taking the
  amount of people per starbucks, and dividing that by the area it covers? Genius. (H)
+ Really Crowded = Green
+ Sparsely Crowded = Pink
+ 
  **/
 
 
@@ -59,7 +62,6 @@ public:
     pair<int, int> getMax(TreeNode* root);
     int maxDiff;
     int minDiff;
-    int maxPix;
     
 private:
     Surface* popDensityChange;
@@ -80,7 +82,6 @@ void HW04_SonodabeApp::setup()
 {
     map = gl::Texture(loadImage("../../../Resources/Map.png"));
     show = 0;
-    maxPix = 0;
     count = 0;
     closeX = -50;
     closeY = -50;
